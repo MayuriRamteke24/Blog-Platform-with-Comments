@@ -58,10 +58,10 @@ const PostDetails = () => {
       const res=await axios.get(URL+"/api/comments/post/"+postId)
       setComments(res.data)
       setLoader(false)
-
     }
     catch(err){
-      setLoader(true)
+      setComments([])
+      setLoader(false)
       console.log(err)
     }
   }

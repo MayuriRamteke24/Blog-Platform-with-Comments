@@ -23,20 +23,15 @@ const Home = () => {
     setLoader(true)
     try{
       const res=await axios.get(URL+"/api/posts/"+search)
-      // console.log(res.data)
       setPosts(res.data)
-      if(res.data.length===0){
-        setNoResults(true)
-      }
-      else{
-        setNoResults(false)
-      }
+      setNoResults(res.data.length === 0)
       setLoader(false)
-      
     }
     catch(err){
       console.log(err)
-      setLoader(true)
+      setPosts([])
+      setNoResults(true)
+      setLoader(false)
     }
   }
 
