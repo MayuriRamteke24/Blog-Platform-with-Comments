@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import {IF} from '../url'
+import { resolveImageUrl } from '../url'
 
 const ProfilePosts = ({p}) => {
   // console.log(p)
@@ -7,7 +7,15 @@ const ProfilePosts = ({p}) => {
     <div className="w-full flex mt-8 space-x-4">
     {/* left */}
     <div className="w-[35%] h-[200px] flex justify-center items-center">
-    <img src={IF+p.photo} alt="" className="h-full w-full object-cover"/>
+    <img
+      src={resolveImageUrl(p.photo)}
+      alt=""
+      onError={(e) => {
+        e.target.onerror = null
+        e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80'
+      }}
+      className="h-full w-full object-cover"
+    />
     </div>
     {/* right */}
     <div className="flex flex-col w-[65%]">

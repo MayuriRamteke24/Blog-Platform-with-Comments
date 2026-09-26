@@ -1,21 +1,25 @@
 /* eslint-disable react/prop-types */
-import { IF } from '../url'
+import { resolveImageUrl } from '../url'
 
 const HomePosts = ({ post }) => {
   return (
-    <article className="glass-card soft-shadow mt-8 flex flex-col overflow-hidden rounded-3xl p-3 transition duration-200 hover:-translate-y-1 hover:shadow-xl md:flex-row md:p-4">
-      <div className="h-56 overflow-hidden rounded-2xl md:w-[34%]">
+    <article className="glass-card soft-shadow group flex h-full flex-col overflow-hidden rounded-[28px] p-3 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative h-56 overflow-hidden rounded-2xl">
         <img
-          src={IF + post.photo}
+          src={resolveImageUrl(post.photo)}
           alt={post.title}
-          className="h-full w-full object-cover transition duration-300 hover:scale-105"
+          onError={(e) => {
+            e.target.onerror = null
+            e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80'
+          }}
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
       </div>
 
-      <div className="flex flex-1 flex-col justify-between p-3 md:p-5">
+      <div className="flex flex-1 flex-col justify-between p-3 md:p-4">
         <div>
           <div className="mb-2 inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700">
-            Featured
+            {post.categories?.[0] || 'Featured'}
           </div>
           <h1 className="mb-2 text-xl font-black tracking-tight text-slate-900 md:text-2xl">
             {post.title}
@@ -30,8 +34,8 @@ const HomePosts = ({ post }) => {
           </div>
         </div>
 
-        <p className="line-clamp-4 text-sm leading-7 text-slate-600 md:text-base">
-          {post.desc?.slice(0, 200) + ' ...Read more'}
+        <p className="text-sm leading-7 text-slate-600 md:text-base">
+          {post.desc?.slice(0, 180) + ' ...Read more'}
         </p>
       </div>
     </article>

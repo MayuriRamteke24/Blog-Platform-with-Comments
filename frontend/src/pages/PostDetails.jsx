@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar"
 import {BiEdit} from 'react-icons/bi'
 import {MdDelete} from 'react-icons/md'
 import axios from "axios"
-import { URL,IF } from "../url"
+import { URL, resolveImageUrl } from "../url"
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../context/UserContext"
 import Loader from "../components/Loader"
@@ -168,7 +168,7 @@ const PostDetails = () => {
   const navigate = useNavigate()
   const isLoading = articleLoading || commentsLoading
 
-  const imageSrc = post.photo?.startsWith('http') ? post.photo : (IF ? IF + post.photo : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80')
+  const imageSrc = resolveImageUrl(post.photo)
 
   const blogParagraphs = typeof post.desc === 'string'
     ? post.desc.split(/\n\s*\n/).filter(Boolean)
@@ -251,7 +251,15 @@ const PostDetails = () => {
         <main className="mx-auto mb-12 max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
           <article className="glass-card soft-shadow overflow-hidden rounded-[30px]">
             <div className="relative h-[280px] overflow-hidden md:h-[420px]">
-              <img src={imageSrc} alt={post.title} className="h-full w-full object-cover" />
+              <img
+                src={imageSrc}
+                alt={post.title}
+                onError={(e) => {
+                  e.target.onerror = null
+                  e.target.src = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80'
+                }}
+                className="h-full w-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5 md:p-8">
                 <div className="mb-3 flex flex-wrap gap-2">

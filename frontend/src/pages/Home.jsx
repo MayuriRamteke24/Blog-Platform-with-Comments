@@ -155,60 +155,57 @@ const buildFallbackPosts = () =>
 const FALLBACK_POSTS = buildFallbackPosts()
 
 const Home = () => {
-  
-  const {search}=useLocation()
-  // console.log(search)
-  const [posts,setPosts]=useState([])
-  const [noResults,setNoResults]=useState(false)
-  const [loader,setLoader]=useState(true)
-  const {user}=useContext(UserContext)
-  // console.log(user)
 
-  const fetchPosts=async()=>{
+  const { search } = useLocation()
+  const [posts, setPosts] = useState([])
+  const [noResults, setNoResults] = useState(false)
+  const [loader, setLoader] = useState(true)
+  const { user } = useContext(UserContext)
+
+  const fetchPosts = async () => {
     setLoader(true)
-    try{
+    try {
       if (!URL) {
         throw new Error('No API URL configured')
       }
-      const res=await axios.get(URL+"/api/posts/"+search)
+      const res = await axios.get(URL + "/api/posts/" + search)
       setPosts(res.data)
       setNoResults(res.data.length === 0)
     }
-    catch(err){
+    catch (err) {
       console.log('Using fallback posts for GitHub Pages mode:', err)
       setPosts(FALLBACK_POSTS)
       setNoResults(false)
     }
-    finally{
+    finally {
       setLoader(false)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchPosts()
-
-  },[search])
-
-
+  }, [search])
 
   return (
-    
     <>
-    <Navbar/>
-<div className="px-8 md:px-[200px] min-h-[80vh]">
-        {loader?<div className="h-[40vh] flex justify-center items-center"><Loader/></div>:!noResults?
-        posts.map((post)=>(
-          <>
-          <Link to={user?`/posts/post/${post._id}`:"/login"}>
-          <HomePosts key={post._id} post={post}/>
-          </Link>
-          </>
-          
-        )):<h3 className="text-center font-bold mt-16">No posts available</h3>}
-    </div>
-    <Footer/>
+      <Navbar />
+      <div className="min-h-[80vh] px-4 py-8 md:px-8 xl:px-16">
+        {loader ? (
+          <div className="flex h-[40vh] items-center justify-center"><Loader /></div>
+        ) : !noResults ? (
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {posts.map((post) => (
+              <Link key={post._id} to={user ? `/posts/post/${post._id}` : '/login'} className="block h-full">
+                <HomePosts post={post} />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <h3 className="mt-16 text-center text-xl font-bold text-slate-700">No posts available</h3>
+        )}
+      </div>
+      <Footer />
     </>
-    
   )
 }
 
