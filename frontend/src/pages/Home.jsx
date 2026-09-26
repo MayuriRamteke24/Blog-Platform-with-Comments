@@ -195,7 +195,7 @@ const Home = () => {
         ) : !noResults ? (
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {posts.map((post) => (
-              <Link key={post._id} to={user ? `/posts/post/${post._id}` : '/login'} className="block h-full">
+              <Link key={post._id} to={`/posts/post/${post._id}`} className="block h-full">
                 <HomePosts post={post} />
               </Link>
             ))}

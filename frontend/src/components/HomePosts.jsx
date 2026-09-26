@@ -3,8 +3,8 @@ import { resolveImageUrl } from '../url'
 
 const HomePosts = ({ post }) => {
   return (
-    <article className="glass-card soft-shadow group flex h-full flex-col overflow-hidden rounded-[28px] p-3 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-56 overflow-hidden rounded-2xl">
+    <article className="glass-card soft-shadow group flex h-full flex-col overflow-hidden rounded-[28px] border border-white/70 bg-gradient-to-br from-white via-slate-50 to-blue-50 p-3 shadow-[0_20px_60px_rgba(15,23,42,0.12)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(37,99,235,0.18)]">
+      <div className="relative h-56 overflow-hidden rounded-[22px]">
         <img
           src={resolveImageUrl(post.photo)}
           alt={post.title}

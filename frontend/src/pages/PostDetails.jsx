@@ -229,6 +229,12 @@ const PostDetails = () => {
 
   const postComment = async (e) => {
     e.preventDefault()
+
+    if (!user) {
+      navigate('/login')
+      return
+    }
+
     try {
       await axios.post(
         URL + "/api/comments/create",
@@ -249,8 +255,8 @@ const PostDetails = () => {
         <div className="flex h-[80vh] w-full items-center justify-center"><Loader /></div>
       ) : (
         <main className="mx-auto mb-12 max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-          <article className="glass-card soft-shadow overflow-hidden rounded-[30px]">
-            <div className="relative h-[280px] overflow-hidden md:h-[420px]">
+          <article className="glass-card soft-shadow overflow-hidden rounded-[32px] border border-white/60 bg-gradient-to-br from-white via-slate-50 to-blue-50 shadow-[0_30px_90px_rgba(15,23,42,0.12)]">
+            <div className="relative h-[300px] overflow-hidden md:h-[440px]">
               <img
                 src={imageSrc}
                 alt={post.title}
@@ -260,7 +266,7 @@ const PostDetails = () => {
                 }}
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/25 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5 md:p-8">
                 <div className="mb-3 flex flex-wrap gap-2">
                   {post.categories?.map((category, index) => (
