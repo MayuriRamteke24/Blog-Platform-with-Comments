@@ -4,33 +4,57 @@ import axios from "axios"
 import { URL } from "../url"
 import { Link, useNavigate } from "react-router-dom"
 
+const Menu = ({ onClose, mobile }) => {
+  const { user, setUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
-const Menu = () => {
-const {user}=useContext(UserContext)
-const {setUser}=useContext(UserContext)
-const navigate=useNavigate()
-
-const handleLogout=async()=>{
-  try{
-    const res=await axios.get(URL+"/api/auth/logout",{withCredentials:true})
-    // console.log(res)
-    setUser(null)
-    navigate("/login")
-
+  const handleLogout = async () => {
+    try {
+      await axios.get(URL + "/api/auth/logout", { withCredentials: true })
+      setUser(null)
+      onClose?.()
+      navigate('/login')
+    } catch (err) {
+      console.log(err)
+    }
   }
-  catch(err){
-    console.log(err)
-  }
-}
+
+  const menuItems = [
+    user && { label: 'Profile', to: `/profile/${user._id}` },
+    user && { label: 'Write', to: '/write' },
+    user && { label: 'My Blogs', to: `/myblogs/${user._id}` },
+    !user && { label: 'Login', to: '/login' },
+    !user && { label: 'Register', to: '/register' },
+  ].filter(Boolean)
+
   return (
-    <div className="bg-black w-[200px] z-10 flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
-    {!user && <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer"><Link to="/login">Login</Link></h3>}
-    {!user &&<h3 className="text-white text-sm hover:text-gray-500 cursor-pointer"><Link to="/register">Register</Link></h3>}
-    {user && <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer"><Link to={"/profile/"+user._id}>Profile</Link></h3>}
-    {user &&<h3 className="text-white text-sm hover:text-gray-500 cursor-pointer"><Link to="/write">Write</Link></h3>}
-    {user && <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer"><Link to={"/myblogs/"+user._id}>My blogs</Link></h3>}
-    {user &&<h3 onClick={handleLogout} className="text-white text-sm hover:text-gray-500 cursor-pointer">Logout</h3>}
+    <div
+      className={`absolute z-50 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl ${
+        mobile ? 'right-0 top-12 w-52' : 'right-0 top-12 w-52'
+      }`}
+    >
+      <div className="flex flex-col gap-1">
+        {menuItems.map((item) => (
+          <Link
+            key={item.label}
+            to={item.to}
+            onClick={onClose}
+            className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+          >
+            {item.label}
+          </Link>
+        ))}
 
+        {user && (
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="mt-1 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-red-50 hover:text-red-600"
+          >
+            Logout
+          </button>
+        )}
+      </div>
     </div>
   )
 }

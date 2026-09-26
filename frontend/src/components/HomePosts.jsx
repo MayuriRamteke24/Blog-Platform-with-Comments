@@ -1,30 +1,40 @@
 /* eslint-disable react/prop-types */
-import {IF} from '../url'
+import { IF } from '../url'
 
-
-const HomePosts = ({post}) => {
+const HomePosts = ({ post }) => {
   return (
-    <div className="w-full flex mt-8 space-x-4">
-    {/* left */}
-    <div className="w-[35%] h-[200px] flex justify-center items-center">
-    <img src={IF+post.photo} alt="" className="h-full w-full object-cover"/>
-    </div>
-    {/* right */}
-    <div className="flex flex-col w-[65%]">
-      <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
-      {post.title}
-      </h1>
-      <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
-       <p>@{post.username}</p>
-       <div className="flex space-x-2 text-sm">
-       <p>{new Date(post.updatedAt).toString().slice(0,15)}</p>
-       <p>{new Date(post.updatedAt).toString().slice(16,24)}</p>
-       </div>
+    <article className="glass-card soft-shadow mt-8 flex flex-col overflow-hidden rounded-3xl p-3 transition duration-200 hover:-translate-y-1 hover:shadow-xl md:flex-row md:p-4">
+      <div className="h-56 overflow-hidden rounded-2xl md:w-[34%]">
+        <img
+          src={IF + post.photo}
+          alt={post.title}
+          className="h-full w-full object-cover transition duration-300 hover:scale-105"
+        />
       </div>
-      <p className="text-sm md:text-lg">{post.desc.slice(0,200)+" ...Read more"}</p>
-    </div>
 
-    </div>
+      <div className="flex flex-1 flex-col justify-between p-3 md:p-5">
+        <div>
+          <div className="mb-2 inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700">
+            Featured
+          </div>
+          <h1 className="mb-2 text-xl font-black tracking-tight text-slate-900 md:text-2xl">
+            {post.title}
+          </h1>
+        </div>
+
+        <div className="mb-3 flex items-center justify-between gap-2 text-xs font-medium text-slate-500">
+          <p>@{post.username}</p>
+          <div className="flex items-center gap-2">
+            <span>{new Date(post.updatedAt).toString().slice(0, 15)}</span>
+            <span>{new Date(post.updatedAt).toString().slice(16, 24)}</span>
+          </div>
+        </div>
+
+        <p className="line-clamp-4 text-sm leading-7 text-slate-600 md:text-base">
+          {post.desc?.slice(0, 200) + ' ...Read more'}
+        </p>
+      </div>
+    </article>
   )
 }
 
