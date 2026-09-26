@@ -14,22 +14,30 @@ const MyBlogs = () => {
   // console.log(search)
   const [posts,setPosts]=useState([])
   const [noResults,setNoResults]=useState(false)
-  const [loader,setLoader]=useState(false)
+  const [loader,setLoader]=useState(true)
   const {user}=useContext(UserContext)
   // console.log(user)
 
   const fetchPosts=async()=>{
+    if (!user?._id) {
+      setPosts([])
+      setNoResults(true)
+      setLoader(false)
+      return
+    }
+
     setLoader(true)
     try{
       const res=await axios.get(URL+"/api/posts/user/"+user._id)
       setPosts(res.data)
       setNoResults(res.data.length === 0)
-      setLoader(false)
     }
     catch(err){
       console.log(err)
       setPosts([])
       setNoResults(true)
+    }
+    finally{
       setLoader(false)
     }
   }

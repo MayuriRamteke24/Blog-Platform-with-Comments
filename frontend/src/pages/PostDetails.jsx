@@ -18,7 +18,7 @@ const PostDetails = () => {
   const {user}=useContext(UserContext)
   const [comments,setComments]=useState([])
   const [comment,setComment]=useState("")
-  const [loader,setLoader]=useState(false)
+  const [loader,setLoader]=useState(true)
   const navigate=useNavigate()
   
 
@@ -30,6 +30,9 @@ const PostDetails = () => {
     }
     catch(err){
       console.log(err)
+    }
+    finally{
+      setLoader(false)
     }
   }
 
@@ -57,12 +60,13 @@ const PostDetails = () => {
     try{
       const res=await axios.get(URL+"/api/comments/post/"+postId)
       setComments(res.data)
-      setLoader(false)
     }
     catch(err){
       setComments([])
-      setLoader(false)
       console.log(err)
+    }
+    finally{
+      setLoader(false)
     }
   }
 
